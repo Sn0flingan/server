@@ -1022,8 +1022,6 @@ def container_build(backends, images):
         # --build-dir is added/overridden to 'build_dir'
         #
         # --install-dir is added/overridden to 'install_dir'
-        #
-        # --container-prebuild-command needs to be quoted correctly
         runargs = [
             'python3',
             './build.py',
@@ -1043,13 +1041,6 @@ def container_build(backends, images):
 
         runargs += ['--build-dir', build_dir]
         runargs += ['--install-dir', install_dir]
-
-        for idx, arg in enumerate(runargs):
-            if arg == '--container-prebuild-command':
-                runargs[idx + 1] = '"{}"'.format(runargs[idx + 1])
-            elif arg.startswith('--container-prebuild-command='):
-                runargs[idx] = '--container-prebuild-command="{}"'.format(
-                    runargs[idx][len('--container-prebuild-command='):])
 
         dockerrunargs = [
             'docker', 'run', '--name', 'tritonserver_builder', '-w',
